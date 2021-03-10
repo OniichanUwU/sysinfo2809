@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//Manejo de sesiones
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,10 +19,19 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+//Manejo de sesiones
+app.use(session({
+  resave : false,
+  saveUninitialized : true,
+  secret : 'no c weno zi c pero no wa a decir'
 
+}));
 //Definición de elementos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
-
+//Bootstrap
+app.use(express.static(path.join(__dirname, '/node_modules/bootstrap/dist')));
+app.use(express.static(path.join(__dirname, '/node_modules/jquery/')));
+app.use(express.static(path.join(__dirname, '/node_modules/popper.js/dist')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
